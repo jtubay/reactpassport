@@ -1,12 +1,19 @@
 const express = require('express');
+const Sequelize = require('sequelize')
 const passport = require('passport')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const path = require('path');
+
+const db = require('./models')
+
 const PORT =process.env.PORT || 3001;
+
 const app = express();
 
+
+//middleware
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'))
 }
@@ -19,8 +26,13 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }))
-
 app.use(passport.initialize());
+app.use(passport.session());
+
+//config
+passport.use(db.User.createStrategy())
+passport.serializeUser(db.User.serializeUser());
+passport.deserializeUser(db.User.deserializeUser())
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './client/build/index.html'))
