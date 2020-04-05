@@ -2,11 +2,14 @@ import React from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 import HomePage from '../pages/HomePage.jsx'
+import DashboardPage from '../pages/DashboardPage.jsx'
+import auth from '../utils/auth'
 
 const App = () => (
     <BrowserRouter>
         <div>
             <Route exact path='/' component={HomePage} />
+            <PrivateRoute path='/dashboard' component={DashboardPage} />
         </div>
 
     </BrowserRouter>
