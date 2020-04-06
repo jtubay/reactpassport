@@ -1,12 +1,12 @@
 const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
-const ExractJWT = require("passport-jwt").ExractJwt;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 const db = require('../models')
 
 passport.use(
   new JwtStrategy({
-      jwtFromRequest: ExractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: 'secret',
       issuer: 'accounts.examplesoft.com',
       audience: 'yoursite.net'
