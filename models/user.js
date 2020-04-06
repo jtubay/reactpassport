@@ -1,9 +1,10 @@
-const passportLocalSequelize = require('passport-local-sequelize')
 
 
 module.exports = (sequelize, DataTypes) => {
-    const User = passportLocalSequelize.defineUser(sequelize, {
-        timezone: DataTypes.STRING
-    })
+    const User = sequelize.define('User', {
+        email: DataTypes.STRING,
+        password: DataTypes.STRING
+    });
+    
     return User;
 } 

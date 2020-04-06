@@ -1,11 +1,10 @@
 const express = require('express');
-const Sequelize = require('sequelize')
-const passport = require('passport')
+// const Sequelize = require('sequelize')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const path = require('path');
-
+const passport = require('./utils/passport')
 const db = require('./models')
 
 const PORT =process.env.PORT || 3001;
@@ -20,19 +19,19 @@ if(process.env.NODE_ENV === 'production'){
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(require('express-session')({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false
-}))
+// app.use(cookieParser());
+// app.use(require('express-session')({
+//     secret: 'keyboard cat',
+//     resave: false,
+//     saveUninitialized: false
+// }))
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 //config
-passport.use(db.User.createStrategy())
-passport.serializeUser(db.User.serializeUser());
-passport.deserializeUser(db.User.deserializeUser())
+// passport.use(db.User.createStrategy())
+// passport.serializeUser(db.User.serializeUser());
+// passport.deserializeUser(db.User.deserializeUser())
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './client/build/index.html'))
@@ -44,3 +43,4 @@ db.sequelize.sync({ force: true })
             console.log(`=======> server now on port ${PORT}`)
         })
     })
+    .catch(err => console.log(err));
