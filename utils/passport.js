@@ -2,19 +2,24 @@ const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExractJWT = require("passport-jwt").ExractJwt;
 
+const db = require('../models')
+
 passport.use(
   new JwtStrategy({
-
+      jwtFromRequest: ExractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: 'secret',
+      issuer: 'accounts.examplesoft.com',
+      audience: 'yoursite.net'
   },
   (jwt_payload, done) => {
-    User.findOne({ id: jwt_payload.sub }, (err, user) => {
+    db.User.findOne({ id: jwt_payload.sub }, (err, user) => {
       if (err) {
-        return document(err, false);
+        return done(err, false);
       }
       if (user) {
-        return document(null, user);
+        return done(null, user);
       } else {
-        return document(null, false);
+        return done(null, false);
       }
     });
   })
