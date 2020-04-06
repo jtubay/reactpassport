@@ -33,6 +33,11 @@ app.use(passport.initialize());
 // passport.serializeUser(db.User.serializeUser());
 // passport.deserializeUser(db.User.deserializeUser())
 
+
+app.get('/api/test', passport.authenticate('jwt'), (req, res) => {
+    res.send('Its working')
+})
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './client/build/index.html'))
 })
