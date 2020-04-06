@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const passport = require("./utils/passport");
 const db = require("./models");
+const jwt = require('jsonwebtoken');
 
 const PORT = process.env.PORT || 3001;
 
