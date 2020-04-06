@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
@@ -22,19 +23,22 @@ app.use(passport.initialize());
 app.post('/login', (req, res) => {
     const { email, password } = req.body
     db.User.findOne({
-        email
-    }, (err, user) => {
-        if(err) throw err;
+        where: {
+            email
+        }
+    }).then( user => {
+       
         if(!user)
             return res.status(401).json({success: false, msg: 'Authentication failed.'})
 
         if(password === user.password) {
-            const token = jwt.sign(user.toJSON(), settings.secret);
+            const token = jwt.sign(user.toJSON(), process.env.CHAT_JWT_SECRET);
             res.json({success: true, token: 'JWT' + token})
         } else {
             res.status(401).send({success: false, msg: 'Authentication failed. wrong pw'})
         }
     })
+    .catch(err => console.log(err))
 })
 
 //API ROUTES
@@ -47,7 +51,7 @@ app.get("*", (req, res) => {
 });
 
 db.sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     app.listen(PORT, () => {
       console.log(`=======> server now on port ${PORT}`);
