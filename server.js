@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
-app.post('/login', (req, res) => {
+app.post('login', (req, res) => {
     const { email, password } = req.body
     db.User.findOne({
         where: {
